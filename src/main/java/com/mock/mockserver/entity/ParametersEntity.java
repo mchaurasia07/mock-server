@@ -20,12 +20,12 @@ import javax.persistence.Table;
 public class ParametersEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
   private String value;
   private String defaultValue;
-  private String required;
+  private boolean required;
 
 
   public Long getId() {
@@ -60,12 +60,11 @@ public class ParametersEntity implements Serializable {
     this.defaultValue = defaultValue;
   }
 
-  public String getRequired() {
+  public boolean isRequired() {
     return required;
   }
 
-  public void setRequired(String required) {
+  public void setRequired(boolean required) {
     this.required = required;
   }
-
 }

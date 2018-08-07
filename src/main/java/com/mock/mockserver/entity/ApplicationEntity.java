@@ -1,5 +1,6 @@
 package com.mock.mockserver.entity;
 
+import com.mock.mockserver.model.Application;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 public class ApplicationEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String name;
   private String context;
@@ -25,6 +26,16 @@ public class ApplicationEntity implements Serializable {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private UserEntity userEntity;
+
+  public ApplicationEntity(){
+
+  }
+
+  public ApplicationEntity(Application model){
+    this.id = model.getId();
+    this.name = model.getName();
+    this.context = model.getContext();
+  }
 
   public Long getId() {
     return id;

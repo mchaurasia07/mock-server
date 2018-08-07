@@ -1,5 +1,6 @@
 package com.mock.mockserver.entity;
 
+import com.mock.mockserver.security.UserPrincipal;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,13 +16,20 @@ import javax.persistence.Table;
 public class UserEntity implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String firstName;
   private String lastName;
   private String email;
   private String password;
 
+  public UserEntity(){
+
+  }
+
+  public UserEntity(UserPrincipal userPrincipal){
+    this.id = userPrincipal.getId();
+  }
   public Long getId() {
     return id;
   }

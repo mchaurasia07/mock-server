@@ -3,6 +3,7 @@ package com.mock.mockserver.controller;
 
 import com.mock.mockserver.entity.ApplicationEntity;
 import com.mock.mockserver.entity.ResourceEntity;
+import com.mock.mockserver.model.Application;
 import com.mock.mockserver.service.ApplicationService;
 import com.mock.mockserver.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +29,8 @@ public class ApplicationController {
 
 
   @RequestMapping( method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody ApplicationEntity applicationEntity){
-    applicationService.save(applicationEntity);
-    return new ResponseEntity( HttpStatus.CREATED);
+    public ResponseEntity create(@RequestBody Application application){
+    return new ResponseEntity( applicationService.save(application),HttpStatus.CREATED);
   }
 
   @RequestMapping(method = RequestMethod.GET)

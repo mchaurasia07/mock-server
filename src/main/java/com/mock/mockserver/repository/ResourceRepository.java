@@ -17,6 +17,10 @@ public interface ResourceRepository extends JpaRepository<ResourceEntity, Long> 
 
   ResourceEntity findByUrl(String url);
   ResourceEntity findByUrlAndMethod(String url, RequestMethod method);
+  ResourceEntity findByUrlAndMethodAndPublished(String url, RequestMethod method, boolean published);
+  ResourceEntity findByIdAndApplication(Long id, ApplicationEntity applicationEntity);
   List<ResourceEntity> findByApplication(ApplicationEntity application);
+  ResourceEntity findByApplicationAndUrlAndMethod(ApplicationEntity applicationEntity, String url, RequestMethod
+      method);
 
 }

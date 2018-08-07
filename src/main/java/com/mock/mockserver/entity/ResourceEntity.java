@@ -1,5 +1,9 @@
 package com.mock.mockserver.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mock.mockserver.model.ApplicationResource;
+import com.mock.mockserver.model.Resource;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -28,7 +32,7 @@ public class ResourceEntity implements Serializable {
 
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String url;
   @Column(columnDefinition = "LONGTEXT")
@@ -41,6 +45,7 @@ public class ResourceEntity implements Serializable {
   private boolean secured;
   @Enumerated(EnumType.STRING)
   private HttpStatus responseStatus;
+  private boolean published;
 
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "param_id")
@@ -49,6 +54,41 @@ public class ResourceEntity implements Serializable {
   @ManyToOne
   @JoinColumn(name = "application_id")
   private ApplicationEntity application;
+
+  public ResourceEntity(){
+
+  }
+
+ /* public ResourceEntity(ApplicationResource applicationResource){
+
+    this.id = applicationResource.getResource().getId();
+    this.url = applicationResource.getResource().getUrl();
+    this.method = applicationResource.getResource().getMethod();
+    this.requestBody = applicationResource.getResource().getRequestBody();
+    this.responseBody = applicationResource.getResource().getResponseBody();
+    this.secured = applicationResource.getResource().isSecured();
+    this.responseStatus = applicationResource.getResource().getResponseStatus();
+    this.parameters = applicationResource.getResource().getParameters();
+    this.published = applicationResource.getResource().isPublished();
+    this.application = new ApplicationEntity(applicationResource.getApplication());
+  }*/
+
+  public ResourceEntity(Resource model){
+    ObjectMapper objectMapper = new ObjectMapper();
+    this.id = model.getId();
+    this.url = model.getUrl();
+    this.method = model.getMethod();
+    this.secured = model.isSecured();
+    this.responseStatus = model.getResponseStatus();
+    this.parameters = model.getRequestParameters();
+    this.published = model.isPublished();
+    try {
+      this.requestBody = objectMapper.writeValueAsString(model.getRequestBody());
+      this.responseBody = objectMapper.writeValueAsString(model.getResponseBody());
+    } catch (JsonProcessingException e) {
+      e.printStackTrace();
+    }
+  }
 
   public Long getId() {
     return id;
@@ -128,5 +168,13 @@ public class ResourceEntity implements Serializable {
 
   public void setResponseStatus(HttpStatus responseStatus) {
     this.responseStatus = responseStatus;
+  }
+
+  public boolean isPublished() {
+    return published;
+  }
+
+  public void setPublished(boolean published) {
+    this.published = published;
   }
 }
